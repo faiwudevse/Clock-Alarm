@@ -12,7 +12,7 @@ import CoreData
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     let coreData = CoreDataStack(modelName: "Model")!
-    var permission = false
+    // var permission = false
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
@@ -68,9 +68,13 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
     
     private func goToDismissViewController() {
+        print("goToDismissViewController")
         let mdvc = MotivationDismissViewController()
-        UIApplication.shared.windows.first?.rootViewController = mdvc
-        UIApplication.shared.windows.first?.makeKeyAndVisible()
+        
+        UIApplication.shared.windows.first { $0.isKeyWindow }?.rootViewController = mdvc
+        //UIApplication.shared.windows.first?.rootViewController = mdvc
+        UIApplication.shared.windows.first { $0.isKeyWindow }?.makeKeyAndVisible()
+        
     }
 }
 

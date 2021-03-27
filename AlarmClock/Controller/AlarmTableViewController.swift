@@ -75,7 +75,8 @@ class AlarmTableViewController: UITableViewController {
     @objc func handleAddAlarms() {
         let alarmSettingVC = AlarmSettingViewController()
         let vc = CustomNaviController(rootViewController: alarmSettingVC)
-
+    
+        vc.modalPresentationStyle = .fullScreen
         present(vc, animated: true)
     }
     

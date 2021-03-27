@@ -71,23 +71,22 @@ class AlarmCell: UITableViewCell, Cell {
     
     fileprivate func setupUI() {
         backgroundColor = .clear
-        
-        addSubview(nameLabel)
-        nameLabel.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        nameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        contentView.addSubview(nameLabel)
+        nameLabel.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        nameLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         nameLabel.heightAnchor.constraint(equalToConstant: 22).isActive = true
         
-        addSubview(timeLabel)
+        contentView.addSubview(timeLabel)
         timeLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 5).isActive = true
-        timeLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
+        timeLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 8).isActive = true
         timeLabel.heightAnchor.constraint(equalToConstant: 22).isActive = true
         
-        addSubview(onSwitch)
+        contentView.addSubview(onSwitch)
         onSwitch.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 5).isActive = true
-        onSwitch.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8).isActive = true
+        onSwitch.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -8).isActive = true
         
-        addSubview(frequencyLabel)
-        frequencyLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
+        contentView.addSubview(frequencyLabel)
+        frequencyLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 8).isActive = true
         frequencyLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
         frequencyLabel.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: 8).isActive = true
         

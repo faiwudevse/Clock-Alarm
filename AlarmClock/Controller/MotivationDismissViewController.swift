@@ -52,7 +52,8 @@ class MotivationDismissViewController: UIViewController {
         ScheduledNotification.shared.updateAllDeliveredNotifications()
         let vc = CustomNaviController(rootViewController: AlarmTableViewController())
         vc.modalPresentationStyle = .fullScreen
-        present(vc , animated: false)
+        self.view.window?.rootViewController = vc
+        self.view.window?.makeKeyAndVisible()
     }
     
     private func setupUI() {

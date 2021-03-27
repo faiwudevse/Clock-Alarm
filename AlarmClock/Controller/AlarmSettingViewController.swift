@@ -23,7 +23,7 @@ class AlarmSettingViewController : UIViewController{
     private let coreData = (UIApplication.shared.delegate as! AppDelegate).coreData
     
     private let selectionTable = UITableView()
-    
+    private var frameHeight: CGFloat = 0
     private var pickDays: Set<Int> = []
     private var alarmName = "Alarm"
     private var alarmSound = "Alarm"
@@ -34,8 +34,22 @@ class AlarmSettingViewController : UIViewController{
         setupUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        subscribeToKeyboardNotifications()
+        frameHeight = view.frame.origin.y
+        print(frameHeight)
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        
+        super.viewWillDisappear(animated)
+        unsubscribeFromKeyboardNotifications()
+    }
     private func setupUI() {
         view.backgroundColor = #colorLiteral(red: 0.1083748862, green: 0.1081092134, blue: 0.1190437749, alpha: 1)
+        
         
         if alarm != nil {
             navigationItem.title = "Edit Clock"
@@ -54,7 +68,7 @@ class AlarmSettingViewController : UIViewController{
         selectionTable.register(AlarmSoundCell.self, forCellReuseIdentifier: AlarmSoundCell.defaultReuseIdentifier)
         
         view.addSubview(selectionTable)
-
+        
         selectionTable.translatesAutoresizingMaskIntoConstraints = false
         selectionTable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30).isActive = true
         selectionTable.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
@@ -64,6 +78,41 @@ class AlarmSettingViewController : UIViewController{
         selectionTable.delegate = self
         selectionTable.isScrollEnabled = false
         
+    }
+    
+    // MARK: subscribe and unsubscrib keyboard notification
+    func subscribeToKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    func unsubscribeFromKeyboardNotifications() {
+        
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    // MARK: keyboard configuration
+    @objc func keyboardWillShow(_ notification:Notification) {
+        print(view.frame.origin.y)
+        print(frameHeight)
+        print("will show")
+        
+        view.layer.frame.origin.y = frameHeight - getKeyboardHeight(notification)
+    }
+    
+    @objc func keyboardWillHide(_ notification:Notification) {
+        print(view.frame.origin.y)
+        print(frameHeight)
+        print("will hide")
+        view.layer.frame.origin.y = frameHeight
+    }
+    
+    func getKeyboardHeight(_ notification:Notification) -> CGFloat {
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo![UIResponder.keyboardFrameEndUserInfoKey] as! NSValue // of CGRect
+        return keyboardSize.cgRectValue.height
     }
     
     @objc private func handleCancel() {
@@ -121,9 +170,9 @@ extension AlarmSettingViewController: UITableViewDelegate, UITableViewDataSource
         } else if section == 1 {
             headerView.nameLabel.text = "Repeat"
         } else if section == 2 {
-            headerView.nameLabel.text = "Label"
-        } else if section == 3 {
             headerView.nameLabel.text = "Sound"
+        } else if section == 3 {
+            headerView.nameLabel.text = "Label"
         }
 
         return headerView
@@ -164,17 +213,19 @@ extension AlarmSettingViewController: UITableViewDelegate, UITableViewDataSource
             return cell
         }
         else if indexPath.section == 2 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: AlarmSoundCell.defaultReuseIdentifier, for: indexPath) as! AlarmSoundCell
+            cell.selectionStyle = .none
+            return cell
+            
+        }
+        else if indexPath.section == 3 {
             let cell = tableView.dequeueReusableCell(withIdentifier: AlarmLabelNameCell.defaultReuseIdentifier, for: indexPath) as! AlarmLabelNameCell
             cell.delegate = self
             cell.labelNameTextField.text = alarmName
             cell.selectionStyle = .none
             return cell
         }
-        else if indexPath.section == 3 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: AlarmSoundCell.defaultReuseIdentifier, for: indexPath) as! AlarmSoundCell
-            cell.selectionStyle = .none
-            return cell
-        }
+        
         
         
         return UITableViewCell()
@@ -184,7 +235,7 @@ extension AlarmSettingViewController: UITableViewDelegate, UITableViewDataSource
         if indexPath.section == 0 {
             return 100
         }
-        else if indexPath.section == 3 {
+        else if indexPath.section == 2 {
             return 110
         }
         return 50

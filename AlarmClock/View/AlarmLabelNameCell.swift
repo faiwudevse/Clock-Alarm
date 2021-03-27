@@ -31,7 +31,7 @@ class AlarmLabelNameCell: UITableViewCell, Cell{
     }
     
     private func setupUI() {
-        addSubview(labelNameTextField)
+        contentView.addSubview(labelNameTextField)
         labelNameTextField.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         labelNameTextField.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         labelNameTextField.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true

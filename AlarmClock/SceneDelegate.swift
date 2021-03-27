@@ -55,6 +55,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         ScheduledNotification.shared.pendingDeliveredNotifications { (ret) in
             DispatchQueue.main.async(execute: {
                 if ret {
+                    print("sceneWillEnterForeground")
                     let mdvc = MotivationDismissViewController()
                     self.window?.rootViewController = mdvc
                     self.window?.makeKeyAndVisible()

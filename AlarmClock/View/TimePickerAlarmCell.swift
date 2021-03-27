@@ -12,6 +12,7 @@ protocol TimeSelectedDelegate{
     func didSelectDate(time : String)
 }
 
+
 class TimePickerAlarmCell: UITableViewCell, Cell {
     
     var time: String? {
@@ -22,6 +23,9 @@ class TimePickerAlarmCell: UITableViewCell, Cell {
     
     let timePicker : UIDatePicker = {
         let datePicker = UIDatePicker()
+        if #available(iOS 13.4, *) {
+            datePicker.preferredDatePickerStyle = .wheels
+        }
         datePicker.datePickerMode = .time
         datePicker.setValue(UIColor.black, forKey: "textColor")
         datePicker.translatesAutoresizingMaskIntoConstraints = false
@@ -31,11 +35,12 @@ class TimePickerAlarmCell: UITableViewCell, Cell {
     var delegate: TimeSelectedDelegate?
     
     private func setupUI() {
-        addSubview(timePicker)
-        timePicker.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        contentView.addSubview(timePicker)
+        timePicker.translatesAutoresizingMaskIntoConstraints = false
+        timePicker.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         timePicker.widthAnchor.constraint(equalToConstant: 200).isActive = true
         timePicker.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        timePicker.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        timePicker.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         timePicker.addTarget(self, action: #selector(dateDidChange(_:)), for: .valueChanged)
         backgroundColor = #colorLiteral(red: 0.9998916984, green: 1, blue: 0.9998809695, alpha: 1)
     }

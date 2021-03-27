@@ -154,7 +154,7 @@ class DayToggleAlarmCell: UITableViewCell, Cell {
     }
     
     fileprivate func setupUI() {
-        addSubview(cellStackView)
+        contentView.addSubview(cellStackView)
         cellStackView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         cellStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         cellStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true

@@ -74,7 +74,7 @@ class AlarmSoundCell: UITableViewCell, Cell {
         volumeSlider.addTarget(self, action: #selector(didVolumeChange(_:)), for: .valueChanged)
         musicButton.addTarget(self, action: #selector(didToogleButton(_:)), for: .touchUpInside)
         cellStackView.addArrangedSubview(playStackView)
-        addSubview(cellStackView)
+        contentView.addSubview(cellStackView)
         cellStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         cellStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
         cellStackView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
